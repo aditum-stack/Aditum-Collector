@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ten</groupId>
-    <artifactId>aditum</artifactId>
+    <groupId>com.ten.aditum</groupId>
+    <artifactId>collector</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>aditum</name>
+    <name>Aditum-Collector</name>
     <description>Data Collector server for Aditum</description>
 
     <parent>
