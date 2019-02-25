@@ -1,4 +1,4 @@
-package com.ten.aditum;
+package com.ten.aditum.collector;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
