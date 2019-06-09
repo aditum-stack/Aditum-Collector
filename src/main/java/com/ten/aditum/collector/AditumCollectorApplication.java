@@ -9,4 +9,5 @@ public class AditumCollectorApplication {
     public static void main(String[] args) {
         SpringApplication.run(AditumCollectorApplication.class, args);
     }
+
 }
