@@ -1,5 +1,6 @@
 package com.ten.aditum.collector.flume2hdfs;
 
+import com.ten.aditum.collector.constants.ScheduleConstants;
 import com.ten.aditum.collector.constants.SqoopConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,9 +17,9 @@ import java.io.IOException;
 public class FlumeToHdfsJob {
 
     /**
-     * 每天0点迁移flume数据到hdfs
+     * 每天1点迁移flume数据到hdfs
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = ScheduleConstants.TIME)
     public void migrate() {
         Long start = System.currentTimeMillis();
         log.info("FlumeToHdfs开始同步");

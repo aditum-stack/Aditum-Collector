@@ -1,5 +1,6 @@
 package com.ten.aditum.collector.mysql2hbase;
 
+import com.ten.aditum.collector.constants.ScheduleConstants;
 import com.ten.aditum.collector.util.HBaseUtil;
 import com.ten.aditum.collector.util.JdbcUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,9 @@ import java.util.List;
 public class MysqlToHbaseJob {
 
     /**
-     * 每天0点迁移mysql数据到hbase
+     * 每天1点迁移mysql数据到hbase
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = ScheduleConstants.TIME)
     public void migrate() throws Exception {
         Connection connection = JdbcUtil.getConnection();
         ArrayList<String> tableNames = JdbcUtil.getTableNames(connection);

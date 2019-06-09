@@ -2,6 +2,7 @@ package com.ten.aditum.collector.mysql2hdfs;
 
 import com.ten.aditum.collector.constants.HadoopConstants;
 import com.ten.aditum.collector.constants.MysqlConstants;
+import com.ten.aditum.collector.constants.ScheduleConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.sqoop.Sqoop;
@@ -19,9 +20,9 @@ import org.springframework.stereotype.Component;
 public class MysqlToHdfsJob {
 
     /**
-     * 每天0点迁移mysql数据到hdfs
+     * 每天1点迁移mysql数据到hdfs
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = ScheduleConstants.TIME)
     public void migrate() {
         Long start = System.currentTimeMillis();
         log.info("MysqlToHdfs开始同步");
