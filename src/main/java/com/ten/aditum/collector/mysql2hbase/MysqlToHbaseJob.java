@@ -36,7 +36,7 @@ public class MysqlToHbaseJob {
     /**
      * 每天1点迁移mysql数据到hbase
      */
-    @Scheduled(cron = ScheduleConstants.TIME)
+//    @Scheduled(cron = ScheduleConstants.TIME)
     public void migrate() throws Exception {
         Connection connection = JdbcUtil.getConnection();
         ArrayList<String> tableNames = JdbcUtil.getTableNames(connection);
