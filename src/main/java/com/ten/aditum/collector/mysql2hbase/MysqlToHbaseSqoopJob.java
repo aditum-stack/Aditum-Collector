@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 @EnableAutoConfiguration
 public class MysqlToHbaseSqoopJob {
 
-//    @Scheduled(cron = "0 41/59 * * * ? ")
-
     /**
      * 每天0点迁移mysql数据到hdfs
      */
@@ -37,7 +35,6 @@ public class MysqlToHbaseSqoopJob {
             log.error("MysqlToHbase同步异常 duration:{} exce:{}", duration, e);
         }
     }
-
 
     private void importDataFromMysql() throws Exception {
         Configuration conf = new Configuration();

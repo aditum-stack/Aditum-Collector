@@ -16,6 +16,7 @@ import java.util.NavigableMap;
  * HBase工具类
  */
 public class HBaseUtil {
+
     /**
      * 获得连接
      */

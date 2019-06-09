@@ -18,8 +18,6 @@ import org.springframework.stereotype.Component;
 @EnableAutoConfiguration
 public class MysqlToHdfsJob {
 
-//    @Scheduled(cron = "0 41/59 * * * ? ")
-
     /**
      * 每天0点迁移mysql数据到hdfs
      */

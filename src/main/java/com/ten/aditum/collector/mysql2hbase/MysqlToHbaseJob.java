@@ -2,9 +2,14 @@ package com.ten.aditum.collector.mysql2hbase;
 
 import com.ten.aditum.collector.util.HBaseUtil;
 import com.ten.aditum.collector.util.JdbcUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.*;
@@ -21,45 +26,41 @@ import java.util.List;
  * 在HBase中，1、一个Mysql表对应一个列族；2、所有表的字段都作为列族的列存在
  * 在Mysql中，建立一个视图，转化为一对一的实现方式
  */
+@Slf4j
+@Component
+@EnableScheduling
+@EnableAutoConfiguration
 public class MysqlToHbaseJob {
-    public static void main(String[] args) throws Exception {
-        //1、获取数据库连接，通过DataBaseMetaData获取数据库中的所有表的名称、结构
+
+    /**
+     * 每天0点迁移mysql数据到hbase
+     */
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+    public void migrate() throws Exception {
         Connection connection = JdbcUtil.getConnection();
-        //获取数据库中表及视图的名称
         ArrayList<String> tableNames = JdbcUtil.getTableNames(connection);
-        //2、在HBase中创建对应的表
         org.apache.hadoop.hbase.client.Connection hbaseConn = HBaseUtil.getConnection();
-        String familyName = "mx_fn"; //列族名
-        String nameSpace = "mx_ns:"; //命名空间
+        String familyName = "mx_fn";
+        String nameSpace = "mx_ns:";
 
         for (String tableName : tableNames) {
             HBaseUtil.createTable(hbaseConn, nameSpace + tableName, familyName);
         }
-        //3、从Mysql中读取数据
         for (String tableName : tableNames) {
             Statement statement = connection.createStatement();
             String sql = "select * from " + tableName;
             ResultSet resultSet = statement.executeQuery(sql);
-            //获取列名
             List<String> columnNames = getColumnName(resultSet);
-            //读取MySQL某张表的数据
             List<ArrayList<String>> allRows = getAllRow(resultSet, columnNames);
-            //构造Put对象
             List<Put> puts = createPutList(familyName, columnNames, allRows);
-            //插入到HBase中
             insertData(hbaseConn, nameSpace + tableName, puts);
         }
-        //4、关闭连接
         connection.close();
         hbaseConn.close();
     }
 
     /**
      * 插入数据至HBase中
-     *
-     * @param hbaseConn
-     * @param s
-     * @param puts
      */
     private static void insertData(org.apache.hadoop.hbase.client.Connection hbaseConn, String s, List<Put> puts) throws IOException {
         Table table = hbaseConn.getTable(TableName.valueOf(s));
@@ -69,11 +70,6 @@ public class MysqlToHbaseJob {
 
     /**
      * 创建Put列表
-     *
-     * @param familyName
-     * @param columnNames
-     * @param allRows
-     * @return
      */
     private static List<Put> createPutList(String familyName, List<String> columnNames, List<ArrayList<String>> allRows) {
         ArrayList<Put> puts = new ArrayList<>();
@@ -94,11 +90,6 @@ public class MysqlToHbaseJob {
 
     /**
      * 读取MySQL某张表的数据
-     *
-     * @param resultSet
-     * @param columnNames
-     * @return
-     * @throws SQLException
      */
     private static List<ArrayList<String>> getAllRow(ResultSet resultSet, List<String> columnNames) throws SQLException {
         ArrayList<ArrayList<String>> allRows = new ArrayList<>();
@@ -115,9 +106,6 @@ public class MysqlToHbaseJob {
 
     /**
      * 获取表的列名
-     *
-     * @param resultSet
-     * @return
      */
     private static List<String> getColumnName(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
