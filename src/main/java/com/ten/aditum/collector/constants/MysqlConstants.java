@@ -4,7 +4,7 @@ public interface MysqlConstants {
 
     String CONNECT = "jdbc:mysql://47.100.236.64:3306/aditum";
 
-    String DRIVER = "com.mysql.cj.jdbc.Driver";
+    String DRIVER = "com.mysql.jdbc.Driver";
 
     String USERNAME = "root";
 

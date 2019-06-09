@@ -70,6 +70,24 @@
             <version>${hadoop.version}</version>
         </dependency>
 
+        <!--hbase-->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>1.1.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>             
+            <groupId>com.google.guava</groupId>             
+            <artifactId>guava</artifactId>             
+            <version>15.0</version>    
+        </dependency>
+
         <!--sqoop-->
         <dependency>
             <groupId>org.apache.avro</groupId>
@@ -84,7 +102,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.11</version>
+            <version>5.1.45</version>
         </dependency>
 
         <!--common-->
